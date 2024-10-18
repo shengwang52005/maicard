@@ -85,7 +85,7 @@ def drawUserImg(title,totalRating,rankRating,userName,icon,plate,title_rare="Nor
 
     if 25 >= int(classRank) >= 0:
         classRankImg = Image.open(rf"{maimaiImgPath}/classRank/UI_CMN_Class_S_{int(classRank):02d}.png").resize((100, 60))
-        UserImg.paste(classRankImg, (284, -2), classRankImg)
+        UserImg.paste(classRankImg, (284, -8), classRankImg)
 
 
     UserIdImg = circle_corner(Image.new('RGBA', (270, 40), color=(255, 255, 255)),5)
