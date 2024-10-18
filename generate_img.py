@@ -213,6 +213,11 @@ def drawCharaImgNewSub(charaId, charaLevel):
     if star >= 6:
         main_star = Image.open(rf"{maimaiImgPath}/maicard/UI_CMN_Chara_star_big_MAX.png").convert("RGBA").resize((53, 50))
         sub_star = Image.open(rf"{maimaiImgPath}/maicard/UI_CMN_Chara_star_small_MAX.png").convert("RGBA").resize((35, 35))
+    elif star >= 5:
+        main_star = Image.open(rf"{maimaiImgPath}/maicard/UI_CMN_Chara_Star_big.png").convert("RGBA").resize(
+            (53, 50))
+        sub_star = Image.open(rf"{maimaiImgPath}/maicard/UI_CMN_Chara_Star_Small.png").convert("RGBA").resize(
+            (35, 35))
     else:
         main_star = Image.open(rf"{maimaiImgPath}/maicard/UI_CMN_Chara_Star_Big_Gauge01_{progress}.png").convert("RGBA").resize((53, 50))
         sub_star = Image.open(rf"{maimaiImgPath}/maicard/UI_CMN_Chara_Star_Small.png").convert("RGBA").resize((35, 35))
@@ -257,6 +262,9 @@ def drawCharaImgNewMain(charaId, charaLevel):
     if star >= 6:
         main_star = Image.open(rf"{maimaiImgPath}/maicard/UI_CMN_Chara_star_big_MAX.png").convert("RGBA").resize((65, 61))
         sub_star = Image.open(rf"{maimaiImgPath}/maicard/UI_CMN_Chara_star_small_MAX.png").convert("RGBA").resize((45, 45))
+    elif star >= 5:
+        main_star = Image.open(rf"{maimaiImgPath}/maicard/UI_CMN_Chara_Star_big.png").convert("RGBA").resize((65, 61))
+        sub_star = Image.open(rf"{maimaiImgPath}/maicard/UI_CMN_Chara_Star_Small.png").convert("RGBA").resize((45, 45))
     else:
         main_star = Image.open(rf"{maimaiImgPath}/maicard/UI_CMN_Chara_Star_Big_Gauge01_{progress}.png").convert("RGBA").resize((65, 61))
         sub_star = Image.open(rf"{maimaiImgPath}/maicard/UI_CMN_Chara_Star_Small.png").convert("RGBA").resize((45, 45))
@@ -383,7 +391,7 @@ def call_user_img_preview(user_data):
     draw = ImageDraw.Draw(base_img)
     draw.text((268,101), f"{user_data['nickname']}", font=ImageFont.truetype(rf'{materialPath}/GenSenMaruGothicTW-Medium.ttf', 20), fill="black")
 
-    icon = rf"{maimaiImgPath}/icon/UI_Icon_{user_data['icon']:06d}.png"
+    icon = rf"{maimaiImgPath}/Icon/UI_Icon_{user_data['icon']:06d}.png"
     iconImg = Image.open(icon).resize((156, 156))
     base_img.paste(iconImg, (68, 114), iconImg)
 
@@ -432,7 +440,7 @@ def main():
     parser.add_argument("--courseRank", type=int, default=10, help="玩家段位认定等级")
     parser.add_argument("--titleRare", type=str, default="Normal", help="玩家称号稀有度")
     parser.add_argument("--chara", nargs='+', type=int, default=[101, 104, 355610, 355611, 355612], help="玩家设置的旅行伙伴ID列表")
-    parser.add_argument("--charaLevel", nargs='+', type=int, default=[9999, 9999, 9999, 9999, 9999], help="玩家设置的旅行伙伴等级列表")
+    parser.add_argument("--charaLevel", nargs='+', type=int, default=[1000, 9999, 1000, 9999, 9999], help="玩家设置的旅行伙伴等级列表")
     parser.add_argument("--output", type=str, default="./output.png", help="图片输出路径")
 
     args = parser.parse_args()
