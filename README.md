@@ -1,6 +1,7 @@
 # maicard-py
 
 基于Python的玩家收藏品组合的图片生成器
+![output.png](output.png)
 
 ## 项目简介
 
