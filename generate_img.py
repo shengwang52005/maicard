@@ -66,31 +66,7 @@ def drawUserImg(title,totalRating,rankRating,userName,icon,plate,title_rare="Nor
     iconImg = Image.open(icon).resize((100,100))
     UserImg.paste(iconImg,(8,10),iconImg)
 
-
-    if 0 <= totalRating <= 999:
-        ratingPlate = "UI_CMN_DXRating_01.png"
-    elif 1000 <= totalRating <= 1999:
-        ratingPlate = "UI_CMN_DXRating_02.png"
-    elif 2000 <= totalRating <= 3999:
-        ratingPlate = "UI_CMN_DXRating_03.png"
-    elif 4000 <= totalRating <= 6999:
-        ratingPlate = "UI_CMN_DXRating_04.png"
-    elif 7000 <= totalRating <= 9999:
-        ratingPlate = "UI_CMN_DXRating_05.png"
-    elif 10000 <= totalRating <= 11999:
-        ratingPlate = "UI_CMN_DXRating_06.png"
-    elif 12000 <= totalRating <= 12999:
-        ratingPlate = "UI_CMN_DXRating_07.png"
-    elif 13000 <= totalRating <= 13999:
-        ratingPlate = "UI_CMN_DXRating_08.png"
-    elif 14000 <= totalRating <= 14499:
-        ratingPlate = "UI_CMN_DXRating_09.png"
-    elif 14500 <= totalRating <= 14999:
-        ratingPlate = "UI_CMN_DXRating_10.png"
-    else:
-        ratingPlate = "UI_CMN_DXRating_11.png"
-
-    ratingPlateImg = Image.open(rf"{maimaiImgPath}/Rating/{ratingPlate}").resize((174,36))
+    ratingPlateImg = Image.open(rf"{maimaiImgPath}/Rating/{getRatingBgImg(totalRating)}").resize((174,36))
     UserImg.paste(ratingPlateImg, (110, 6), ratingPlateImg)
 
     # 定义偏移量和初始x坐标
@@ -154,50 +130,31 @@ def _getCharWidth(o) -> int:
             return wid
     return 1
 
-def _coloumWidth(s:str):
-    res = 0
-    for ch in s:
-        res += _getCharWidth(ord(ch))
-    return res
-
-def _changeColumnWidth(str, len):
-    res = 0
-    sList = []
-    for ch in str:
-        res += _getCharWidth(ord(ch))
-        if res <= len:
-            sList.append(ch)
-    return ''.join(sList)
-
-def computeRa(ds: float, achievement:float) -> int:
-    baseRa = 22.4
-    if achievement < 50:
-        baseRa = 7.0
-    elif achievement < 60:
-        baseRa = 8.0
-    elif achievement < 70:
-        baseRa = 9.6
-    elif achievement < 75:
-        baseRa = 11.2
-    elif achievement < 80:
-        baseRa = 12.0
-    elif achievement < 90:
-        baseRa = 13.6
-    elif achievement < 94:
-        baseRa = 15.2
-    elif achievement < 97:
-        baseRa = 16.8
-    elif achievement < 98:
-        baseRa = 20.0
-    elif achievement < 99:
-        baseRa = 20.3
-    elif achievement < 99.5:
-        baseRa = 20.8
-    elif achievement < 100:
-        baseRa = 21.1
-    elif achievement < 100.5:
-        baseRa = 21.6
-    return math.floor(ds * (min(100.5, achievement) / 100) * baseRa)
+def getRatingBgImg(rating):
+    totalRating = int(rating)
+    if 0 <= totalRating <= 999:
+        ratingPlate = "UI_CMN_DXRating_01.png"
+    elif 1000 <= totalRating <= 1999:
+        ratingPlate = "UI_CMN_DXRating_02.png"
+    elif 2000 <= totalRating <= 3999:
+        ratingPlate = "UI_CMN_DXRating_03.png"
+    elif 4000 <= totalRating <= 6999:
+        ratingPlate = "UI_CMN_DXRating_04.png"
+    elif 7000 <= totalRating <= 9999:
+        ratingPlate = "UI_CMN_DXRating_05.png"
+    elif 10000 <= totalRating <= 11999:
+        ratingPlate = "UI_CMN_DXRating_06.png"
+    elif 12000 <= totalRating <= 12999:
+        ratingPlate = "UI_CMN_DXRating_07.png"
+    elif 13000 <= totalRating <= 13999:
+        ratingPlate = "UI_CMN_DXRating_08.png"
+    elif 14000 <= totalRating <= 14499:
+        ratingPlate = "UI_CMN_DXRating_09.png"
+    elif 14500 <= totalRating <= 14999:
+        ratingPlate = "UI_CMN_DXRating_10.png"
+    else:
+        ratingPlate = "UI_CMN_DXRating_11.png"
+    return ratingPlate
 
 def apply_gradient_blur(image, blur_radius=10, start_height=0, end_height=35):
     # 创建一个与原始图像大小相同的空白渐变蒙版
@@ -378,7 +335,7 @@ def draw_text_with_spacing(draw: ImageDraw.ImageDraw, pos, text, font, fill_colo
 
 def call_user_img(user_data, no_chara=False):
     try:
-        frame_path = rf"{maimaiImgPath}/Frame/UI_Frame_{str(user_data["frame"]).zfill(6)}.png"
+        frame_path = rf"{maimaiImgPath}/Frame/UI_Frame_{user_data["frame"]:06d}.png"
         frame_img = Image.open(frame_path).resize((1080, 452))
     except:
         frame_path = rf"{maimaiImgPath}/Frame/UI_Frame_000000.png"
@@ -390,8 +347,8 @@ def call_user_img(user_data, no_chara=False):
 
     img.paste(frame_img, (0, 0))
 
-    plate = rf"{maimaiImgPath}/Plate/UI_Plate_{str(user_data['plate']).zfill(6)}.png"
-    icon = rf"{maimaiImgPath}/Icon/UI_Icon_{str(user_data['icon']).zfill(6)}.png"
+    plate = rf"{maimaiImgPath}/Plate/UI_Plate_{user_data['plate']:06d}.png"
+    icon = rf"{maimaiImgPath}/Icon/UI_Icon_{user_data['icon']:06d}.png"
 
     UserImg: Image = drawUserImg(user_data["title"], user_data["rating"], user_data['courseRank'], user_data['nickname'], icon, plate,user_data["titleRare"],user_data["classRank"])
     img.paste(UserImg, (25, 25), UserImg)
@@ -440,43 +397,19 @@ def call_user_img_preview(user_data):
         stroke_color='black'
     )
 
-    totalRating = int(user_data["rating"])
-    if 0 <= totalRating <= 999:
-        ratingPlate = "UI_CMN_DXRating_01.png"
-    elif 1000 <= totalRating <= 1999:
-        ratingPlate = "UI_CMN_DXRating_02.png"
-    elif 2000 <= totalRating <= 3999:
-        ratingPlate = "UI_CMN_DXRating_03.png"
-    elif 4000 <= totalRating <= 6999:
-        ratingPlate = "UI_CMN_DXRating_04.png"
-    elif 7000 <= totalRating <= 9999:
-        ratingPlate = "UI_CMN_DXRating_05.png"
-    elif 10000 <= totalRating <= 11999:
-        ratingPlate = "UI_CMN_DXRating_06.png"
-    elif 12000 <= totalRating <= 12999:
-        ratingPlate = "UI_CMN_DXRating_07.png"
-    elif 13000 <= totalRating <= 13999:
-        ratingPlate = "UI_CMN_DXRating_08.png"
-    elif 14000 <= totalRating <= 14499:
-        ratingPlate = "UI_CMN_DXRating_09.png"
-    elif 14500 <= totalRating <= 14999:
-        ratingPlate = "UI_CMN_DXRating_10.png"
-    else:
-        ratingPlate = "UI_CMN_DXRating_11.png"
-
-    ratingPlateImg = Image.open(rf"{maimaiImgPath}/Rating_big/{ratingPlate}").resize((312,58))
+    ratingPlateImg = Image.open(rf"{maimaiImgPath}/Rating_big/{getRatingBgImg(int(user_data["rating"]))}").resize((312,58))
     base_img.paste(ratingPlateImg, (253, 163), ratingPlateImg)
 
     # 定义偏移量和初始x坐标
     offset = 25
     start_x = 496
     start_y = 177
-    x_positions = [start_x - i * offset for i in range(len(str(totalRating)))][-5:]
+    x_positions = [start_x - i * offset for i in range(len(str(int(user_data["rating"]))))][-5:]
 
     # 根据totalRating的位数处理图片
     for i, x_pos in enumerate(x_positions):
         # 计算当前位上的数字
-        digit = int(totalRating / (10 ** i) % 10)
+        digit = int(int(user_data["rating"]) / (10 ** i) % 10)
         # 打开并调整图片大小
         numImg = Image.open(rf"{maimaiImgPath}/num/UI_NUM_Drating_{digit}.png")
         # 粘贴图片
