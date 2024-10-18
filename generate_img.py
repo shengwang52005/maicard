@@ -197,9 +197,11 @@ def drawCharaImgNewSub(charaId, charaLevel):
 
     if not os.path.exists(rf"{maimaiImgPath}/Chara/UI_Chara_{charaId:06d}.png"):
         charaId = 0
-    chara_img = Image.open(rf"{maimaiImgPath}/Chara/UI_Chara_{charaId:06d}.png").convert("RGBA").resize((264, 264))
+    chara_img = Image.new("RGBA", (264, 300), (255, 255, 255, 0))
+    c = Image.open(rf"{maimaiImgPath}/Chara/UI_Chara_{charaId:06d}.png").convert("RGBA").resize((170, 170))
+    chara_img.paste(c, (0, 40), c)
 
-    chara_img = chara_img.crop((58, 0, 58 + alpha.width, alpha.height))
+    chara_img = chara_img.crop((12, -32, 12 + alpha.width, alpha.height - 32))
 
     base.paste(chara_img, (0, 0), chara_img)
     base.paste(frame, (-2, -2), frame)
@@ -250,7 +252,7 @@ def drawCharaImgNewMain(charaId, charaLevel):
         charaId = 0
     base = Image.open(rf"{maimaiImgPath}/Chara/UI_Chara_{charaId:06d}.png").convert("RGBA").resize((512, 512))
 
-    base.paste(frame, (108, 381), frame)
+    base.paste(frame, (140, 381), frame)
 
     if star >= 6:
         main_star = Image.open(rf"{maimaiImgPath}/maicard/UI_CMN_Chara_star_big_MAX.png").convert("RGBA").resize((65, 61))
@@ -260,19 +262,20 @@ def drawCharaImgNewMain(charaId, charaLevel):
         sub_star = Image.open(rf"{maimaiImgPath}/maicard/UI_CMN_Chara_Star_Small.png").convert("RGBA").resize((45, 45))
 
     if star >= 1:
-        base.paste(main_star, (193, 443), main_star)
+        base.paste(main_star, (225, 443), main_star)
     if star >= 2:
-        base.paste(sub_star, (153, 446), sub_star)
+        base.paste(sub_star, (185, 446), sub_star)
     if star >= 3:
-        base.paste(sub_star, (253, 446), sub_star)
+        base.paste(sub_star, (285, 446), sub_star)
     if star >= 4:
         sub_star = sub_star.resize((30, 30))
-        base.paste(sub_star, (126, 438), sub_star)
+        base.paste(sub_star, (158, 438), sub_star)
     if star >= 5:
-        base.paste(sub_star, (295, 438), sub_star)
+        base.paste(sub_star, (327, 438), sub_star)
 
-    base.paste(level_img, (138, 405), level_img)
-    num_x = 197
+
+    base.paste(level_img, (170, 405), level_img)
+    num_x = 229
     for num in str(charaLevel):
         num_img = Image.open(rf"{maimaiImgPath}/maicard/UI_CMN_Num_26p_{num}.png").convert("RGBA").resize((38, 44))
         base.paste(num_img, (num_x, 394), num_img)
@@ -358,7 +361,7 @@ def call_user_img(user_data, no_chara=False):
 
     if not no_chara:
         main_chara = drawCharaImgNewMain(user_data["chara"][0], user_data["charaLevel"][0]).resize((309, 309))
-        img.paste(main_chara, (-16, 143), main_chara)
+        img.paste(main_chara, (-36, 143), main_chara)
         chara_start_x = 204
         chara_start_y = 170
         for chara in zip(user_data["chara"][1:], user_data["charaLevel"][1:]):
@@ -428,7 +431,7 @@ def main():
     parser.add_argument("--classRank", type=int, default=7, help="玩家友人对战等级")
     parser.add_argument("--courseRank", type=int, default=10, help="玩家段位认定等级")
     parser.add_argument("--titleRare", type=str, default="Normal", help="玩家称号稀有度")
-    parser.add_argument("--chara", nargs='+', type=int, default=[350101, 350104, 350103, 350102, 350101], help="玩家设置的旅行伙伴ID列表")
+    parser.add_argument("--chara", nargs='+', type=int, default=[101, 104, 355610, 355611, 355612], help="玩家设置的旅行伙伴ID列表")
     parser.add_argument("--charaLevel", nargs='+', type=int, default=[9999, 9999, 9999, 9999, 9999], help="玩家设置的旅行伙伴等级列表")
     parser.add_argument("--output", type=str, default="./output.png", help="图片输出路径")
 
